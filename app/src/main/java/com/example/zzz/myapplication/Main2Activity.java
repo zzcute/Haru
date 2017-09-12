@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,31 +81,22 @@ public class Main2Activity extends AppCompatActivity
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-
-
-
        // ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
          //       this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         //drawer.setDrawerListener(toggle);
         //toggle.syncState();
 
-        final ToggleButton toggleNavi = (ToggleButton)findViewById(R.id.toggleNavigationButton);
-        //ToggleButton toggle = new ToggleButton(this, drawer, R.id.toggleButton, "Open navigation drawer", "Close navigation drawer");
+        ImageButton listButton = (ImageButton)findViewById(R.id.listButton);
 
-        toggleNavi.setOnClickListener(new View.OnClickListener(){
+        listButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                if(toggleNavi.isChecked())
-                {
-                    drawer.openDrawer(Gravity.LEFT);
-                }
-                else
-                {
-                    drawer.closeDrawer(Gravity.LEFT);
-                }
+
+                drawer.openDrawer(Gravity.LEFT);
             }
         });
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -213,17 +206,18 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_login) {
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    LoginActivity.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_register) {
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    RegisterActivity.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
 
         }
 
