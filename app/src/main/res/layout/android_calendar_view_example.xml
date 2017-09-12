@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+<!--</LinearLayout>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="취소"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <activity
+        android:name="MyOtherActivity"
+        android:label="@string/app_name">
+    </activity>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="완료"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/date_display"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calendar View Date Display"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="0.74" />
+
+
+</LinearLayout>
