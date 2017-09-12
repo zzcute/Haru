@@ -49,10 +49,9 @@ public class RegisterActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             //특정 response를 실행했을 때 결과가 담길 수 있도록 함
-                            boolean success = jsonResponse.getBoolean("success");
                             boolean result = jsonResponse.getBoolean("result");
 
-                            if(success && result) {
+                            if(result) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                                 builder.setMessage("회원 등록에 성공하였습니다."+result)
                                         .setPositiveButton("확인",null)
