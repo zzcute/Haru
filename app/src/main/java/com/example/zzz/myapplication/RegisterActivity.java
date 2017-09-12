@@ -32,16 +32,6 @@ public class RegisterActivity extends AppCompatActivity {
         emailText.setText(userEmail);
 
         Button nextButton = (Button) findViewById(R.id.nextButton);
-        Button alreadyButton = (Button) findViewById(R.id.alreadyButton);
-
-        alreadyButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                RegisterActivity.this.startActivity(intent);
-            }
-        });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
 
