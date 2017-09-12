@@ -2,89 +2,133 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@mipmap/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.zzz.myapplication.LoginActivity">
+    tools:context="com.example.zzz.myapplication.LoginActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
-    <Button
-        android:id="@+id/joinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="가입하기"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        android:layout_marginStart="47dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<Button-->
+        <!--android:id="@+id/joinButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="가입하기"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--tools:layout_constraintTop_creator="1"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--tools:layout_constraintLeft_creator="1"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-    <Button
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="65dp"
-        android:layout_marginRight="65dp"
-        android:text="로그인하기"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.544"
-        tools:layout_constraintBottom_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+    <!--<Button-->
+        <!--android:id="@+id/loginButton"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="66dp"-->
+        <!--android:text="로그인하기"-->
+        <!--tools:layout_constraintTop_creator="1"-->
+        <!--tools:layout_constraintRight_creator="1"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <EditText
         android:id="@+id/idText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="43dp"
+        android:layout_width="287dp"
+        android:layout_height="37dp"
         android:ems="10"
         android:hint="아이디"
         android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="@+id/passwordText"
-        app:layout_constraintRight_toRightOf="@+id/passwordText"
-        app:layout_constraintTop_toBottomOf="@+id/joinButton"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
+        android:layout_marginStart="39dp"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        android:layout_marginBottom="18dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="39dp" />
 
     <EditText
         android:id="@+id/passwordText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="42dp"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
         android:ems="10"
         android:hint="패스워드"
         android:inputType="textPassword"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idText"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/idText"
         tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/idText"
         tools:layout_constraintTop_creator="1"
-        android:layout_marginLeft="39dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="417dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <Button
         android:id="@+id/nextButton"
-        android:layout_width="88dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginStart="70dp"
-        android:text="로그인"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="56dp"
-        app:layout_constraintLeft_toRightOf="@+id/passwordText" />
+        android:layout_marginTop="49dp"
+        android:background="@mipmap/signup_send"
+        app:layout_constraintTop_toBottomOf="@+id/passwordText"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <Button
-        android:id="@+id/browseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="둘러보기"
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="가입하기"-->
+        <!--tools:layout_constraintTop_creator="1"-->
+        <!--tools:layout_constraintRight_creator="1"-->
+        <!--android:layout_marginEnd="29dp"-->
+        <!--app:layout_constraintRight_toRightOf="@+id/imageButton4"-->
+        <!--android:layout_marginTop="34dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/imageButton4" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/textView2"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="로그인하기"-->
+        <!--tools:layout_constraintTop_creator="1"-->
+        <!--tools:layout_constraintRight_creator="1"-->
+        <!--android:layout_marginEnd="18dp"-->
+        <!--app:layout_constraintRight_toRightOf="@+id/idText"-->
+        <!--android:layout_marginTop="34dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/imageButton3" />-->
+
+    <ImageButton
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:id="@+id/loginButton"
+        android:layout_width="97dp"
+        android:layout_height="19dp"
+        app:srcCompat="@mipmap/login2"
         tools:layout_constraintTop_creator="1"
         tools:layout_constraintRight_creator="1"
-        android:layout_marginEnd="19dp"
-        app:layout_constraintRight_toRightOf="@+id/passwordText"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
+
+        android:layout_marginEnd="34dp"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:layout_marginRight="44dp"
+        android:layout_marginTop="255dp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:id="@+id/joinButton"
+        android:layout_width="94dp"
+        android:layout_height="19dp"
+        app:srcCompat="@mipmap/signup"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="255dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="31dp" />
+
 </android.support.constraint.ConstraintLayout>

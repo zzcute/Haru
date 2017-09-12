@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,6 +33,9 @@ public class RegisterActivity extends AppCompatActivity {
         emailText.setText(userEmail);
 
         Button nextButton = (Button) findViewById(R.id.nextButton);
+
+        ImageButton joinButton = (ImageButton) findViewById(R.id.joinButton);
+        ImageButton loginButton = (ImageButton) findViewById(R.id.loginButton);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
 
@@ -76,6 +80,17 @@ public class RegisterActivity extends AppCompatActivity {
                 RegisterRequest registerRequest = new RegisterRequest(userEmail, userID, userPassword, Verify, imageSource, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest); //버튼을 클릭했을때 registerRequest가 실행
+            }
+        });
+
+        //가입 화면으로 넘어갈 수 있게 버튼 클릭 부분 구현
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent LoginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                RegisterActivity.this.startActivity(LoginIntent);
+
             }
         });
     }

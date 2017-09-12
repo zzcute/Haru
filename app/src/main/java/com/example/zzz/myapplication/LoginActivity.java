@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,12 +28,9 @@ public class LoginActivity extends AppCompatActivity {
 
         final Button nextButton = (Button) findViewById(R.id.nextButton);
 
-        Button joinButton = (Button) findViewById(R.id.joinButton);
-        Button loginButton = (Button) findViewById(R.id.loginButton);
+        ImageButton joinButton = (ImageButton) findViewById(R.id.joinButton);
+        ImageButton loginButton = (ImageButton) findViewById(R.id.loginButton);
         //로그인 버튼 눌러도 아무 것도 실행되지 않음
-
-        Button browseButton = (Button) findViewById(R.id.browseButton);
-
 
 
 /* 둘러보기 버튼 눌렀을 때 익명으로 로그인하기 구현
@@ -99,8 +97,12 @@ public class LoginActivity extends AppCompatActivity {
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent joinIntent = new Intent(LoginActivity.this, JoinActivity.class);
-                LoginActivity.this.startActivity(joinIntent);
+//                Intent joinIntent = new Intent(LoginActivity.this, JoinActivity.class);
+//                LoginActivity.this.startActivity(joinIntent);
+
+                Intent RegisterIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                LoginActivity.this.startActivity(RegisterIntent);
+
             }
         });
 
