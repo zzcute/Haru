@@ -47,33 +47,39 @@
         android:id="@+id/idText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="9dp"
         android:ems="10"
         android:hint="아이디"
         android:inputType="textPersonName"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
+        android:textColor="#707070"
+        android:textColorHint="#969696"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/passwordText"
-        app:layout_constraintRight_toRightOf="@+id/emailText"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="@+id/emailText"
         app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginBottom="9dp" />
+        app:layout_constraintLeft_toLeftOf="@+id/emailText"
+        app:layout_constraintRight_toRightOf="@+id/emailText"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
 
     <EditText
         android:id="@+id/emailText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
         android:ems="10"
         android:hint="이메일"
         android:inputType="textEmailAddress"
-        tools:layout_constraintBottom_creator="1"
+        android:textColor="#707070"
+        android:textColorHint="#969696"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/idText"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
-        android:layout_marginBottom="11dp" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1" />
 
     <!--<ImageButton-->
         <!--android:id="@+id/imageButton"-->
@@ -98,13 +104,16 @@
         android:ems="10"
         android:hint="비밀번호"
         android:inputType="textPersonName"
+        android:textColor="#707070"
+        android:textColorHint="#969696"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/idText"
         app:layout_constraintRight_toRightOf="@+id/idText"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintHorizontal_bias="0.0" />
+        tools:layout_constraintRight_creator="1" />
 
     <Button
         android:id="@+id/nextButton"

@@ -119,6 +119,8 @@ public class Main2Activity extends AppCompatActivity
                 try {
                     if(tb.isChecked()) {
 
+                        tb.setBackgroundResource(R.mipmap.keyword);
+
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 1,
                                 100,
@@ -129,6 +131,7 @@ public class Main2Activity extends AppCompatActivity
                                 mLocationListener);
                     }
                     else{
+                        tb.setBackgroundResource(R.mipmap.location);
                         lm.removeUpdates(mLocationListener);
                     }
 
@@ -310,7 +313,7 @@ public class Main2Activity extends AppCompatActivity
 
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-        //dcimPath += "/Camera";
+        dcimPath += "/Camera";
 
         File[] pics = dcim.listFiles();
 
@@ -339,13 +342,14 @@ public class Main2Activity extends AppCompatActivity
         {
             try {
 
+
+
 //                testText.setText(dcimPath + "/" + fileList[i]);
 
                 ExifInterface exif = new ExifInterface(dcimPath + "/" + fileList[i]);
 
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);
-
 
                /* TextView lati = (TextView)findViewById(R.id.lati);
                 lati.setText(latitude);
@@ -358,7 +362,7 @@ public class Main2Activity extends AppCompatActivity
                     continue;
                 }
 
-                Bitmap bMap = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
+                Log.d("lenth",String.valueOf(i));
 
                 float latitudeInt = convertToDegree(latitude);
                 float longitudeInt = convertToDegree(longitude);
@@ -374,6 +378,7 @@ public class Main2Activity extends AppCompatActivity
                 map.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                 map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
+                map.animateCamera(CameraUpdateFactory.zoomTo(15));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -460,7 +465,6 @@ public class Main2Activity extends AppCompatActivity
     public String[] getFileList(String strPath){
 
         File fileRoot = new File(strPath);
-
 
         if(fileRoot.isDirectory() == false)
             return null;

@@ -36,33 +36,38 @@
     <EditText
         android:id="@+id/idText"
         android:layout_width="287dp"
-        android:layout_height="37dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="39dp"
+        android:layout_marginStart="39dp"
         android:ems="10"
         android:hint="아이디"
         android:inputType="textPersonName"
-        tools:layout_constraintBottom_creator="1"
+        android:textColor="#707070"
+        android:textColorHint="#969696"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/passwordText"
-        android:layout_marginStart="39dp"
-        tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="18dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="39dp" />
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1" />
 
     <EditText
         android:id="@+id/passwordText"
         android:layout_width="0dp"
-        android:layout_height="37dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="417dp"
         android:ems="10"
         android:hint="패스워드"
         android:inputType="textPassword"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="@+id/idText"
-        tools:layout_constraintLeft_creator="1"
+        android:textColor="#707070"
+        android:textColorHint="#969696"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/idText"
-        tools:layout_constraintTop_creator="1"
+        app:layout_constraintRight_toRightOf="@+id/idText"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="417dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <Button
         android:id="@+id/nextButton"
