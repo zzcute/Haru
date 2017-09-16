@@ -26,6 +26,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,10 +43,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import java.util.Date;
 
 import static com.example.zzz.myapplication.R.id.map;
 
@@ -53,8 +60,6 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     ToggleButton tb;
-    // TextView text;
-    // TextView testText;
 
     double myLati = 37.56;
     double myLongi = 126.97;
@@ -79,7 +84,66 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene_without_login);
 
+        getAcessForSave();
+        getAcessForLocation();
+        getDateString();
 
+        setNavMenu();
+
+        setToggleButton();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        final MapFragment mapFragment = (MapFragment)fragmentManager
+                .findFragmentById(map);
+        mapFragment.getMapAsync(this);
+
+
+        arrayPoint = new ArrayList<LatLng>();
+    }
+
+    public void setShowPictureButton()
+    {
+        Button button = (Button)findViewById(R.id.mapButton);
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                //mGoogleMap.clear();
+                polylineOptions = new PolylineOptions();
+                polylineOptions.color(Color.argb((int)(255 * 0.5), 46, 43, 61));
+                polylineOptions.width(10);
+                mGoogleMap.addPolyline(polylineOptions);
+                getPictureFromSD();
+            }
+        });
+    }
+
+    public void saveFile()
+    {
+        try {
+            String FileName = "SaveFile" + getDateString();
+            FileOutputStream os = openFileOutput(FileName, MODE_PRIVATE);
+            ObjectOutputStream a;
+
+            //os.write();
+        }
+        catch(IOException e) {
+
+        }
+    }
+
+    public String getDateString()
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+        String str_date = df.format(new Date());
+
+        Log.d("tag", str_date);
+
+        return str_date;
+    }
+
+    public void setNavMenu()
+    {
         ImageButton listButton = (ImageButton)findViewById(R.id.listButton);
 
         listButton.setOnClickListener(new View.OnClickListener(){
@@ -95,8 +159,10 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getAcessForLocation();
+    }
 
+    public void setToggleButton()
+    {
         tb = (ToggleButton) findViewById(R.id.toggleButton);
 //        text = (TextView) findViewById(R.id.gpsState);
         //      testText = (TextView)findViewById(R.id.testText);
@@ -134,14 +200,6 @@ public class MainSceneWithoutLogin extends AppCompatActivity
             }
 
         });
-
-        FragmentManager fragmentManager = getFragmentManager();
-        final MapFragment mapFragment = (MapFragment)fragmentManager
-                .findFragmentById(map);
-        mapFragment.getMapAsync(this);
-
-
-        arrayPoint = new ArrayList<LatLng>();
     }
 
     @Override
@@ -200,11 +258,61 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                     getApplicationContext(), // 현재 화면의 제어권자
                     MainSceneWithLogin.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
+        } else if(id == R.id.nav_calender){
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    CalendarViewExample.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getAcessForSave()
+    {
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.M)
+        {
+            int permisionResult = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if(permisionResult == PackageManager.PERMISSION_DENIED)
+            {
+                if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                {
+                    //AlertDialog.Builder a;
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainSceneWithoutLogin.this);
+
+                    dialog.setTitle("권한이 필요합니다")
+                            .setMessage("이 기능을 사용하기 위해서 저장 권한이 필요합니다")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which){
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                    {
+                                        requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+                                    }
+                                }
+                            })
+                            .setNegativeButton("아니요", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which){
+                                    Toast.makeText(MainSceneWithoutLogin.this, "기능을 취소했습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .create()
+                            .show();
+
+
+
+                }
+                else
+                {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+                }
+            }
+
+        }
     }
 
     public void getAcessForLocation()
@@ -276,15 +384,14 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         map.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
         map.animateCamera(CameraUpdateFactory.zoomTo(15));
 
+
+        setShowPictureButton();
         //사진 불러오기
+        getPictureFromSD();
+    }
 
-        if(isSdCard() == false)
-            finish();
-
-        //mTextMsg = (TextView)findViewById(R.id.textMessage);
-
-//        testText = (TextView)findViewById(R.id.testText);
-
+    public void getPictureFromSD()
+    {
         mRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
         //mTextMsg.setText(mRoot);
         File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
@@ -324,10 +431,10 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 //bmp.setHeight(1);
                 //bmp.setWidth(1);
 
-                map.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-                map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
-                map.animateCamera(CameraUpdateFactory.zoomTo(15));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
+                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -335,8 +442,6 @@ public class MainSceneWithoutLogin extends AppCompatActivity
             }
 
         }
-
-
     }
 
     private void ReadSDCard(){
@@ -357,7 +462,6 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
     private final LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-
 
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();

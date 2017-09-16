@@ -1,26 +1,11 @@
 package com.example.zzz.myapplication;
 
-/**
- * Created by psk93 on 2017-09-13.
- */
-
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by psk93 on 2017-09-11.
- */
-//
-//public class CalendarViewExample {
-//}
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.CalendarView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class CalendarViewExample extends AppCompatActivity {
 
