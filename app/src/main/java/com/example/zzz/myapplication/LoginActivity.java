@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String userID = jsonResponse.getString("userID");
                                 String userPassword = jsonResponse.getString("userPassword");
 
-                                Intent nextIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent nextIntent = new Intent(LoginActivity.this, MainSceneWithoutLogin.class);
                                 nextIntent.putExtra("userID",userID);
                                 nextIntent.putExtra("userPassword",userPassword);
 

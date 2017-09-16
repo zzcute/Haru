@@ -49,7 +49,7 @@ import java.util.List;
 
 import static com.example.zzz.myapplication.R.id.map;
 
-public class Main2Activity extends AppCompatActivity
+public class MainSceneWithLogin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     ToggleButton tb;
@@ -77,12 +77,12 @@ public class Main2Activity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main_scene_with_login);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-       // ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-         //       this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        // ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        //       this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         //drawer.setDrawerListener(toggle);
         //toggle.syncState();
 
@@ -184,7 +184,7 @@ public class Main2Activity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
+        getMenuInflater().inflate(R.menu.main_scene_with_login, menu);
         return true;
     }
 
@@ -240,7 +240,7 @@ public class Main2Activity extends AppCompatActivity
                 if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION))
                 {
                     //AlertDialog.Builder a;
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(Main2Activity.this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainSceneWithLogin.this);
 
                     dialog.setTitle("권한이 필요합니다")
                             .setMessage("이 기능을 사용하기 위해서 위치 권한이 필요합니다")
@@ -256,7 +256,7 @@ public class Main2Activity extends AppCompatActivity
                             .setNegativeButton("아니요", new DialogInterface.OnClickListener(){
                                 @Override
                                 public void onClick(DialogInterface dialog, int which){
-                                    Toast.makeText(Main2Activity.this, "기능을 취소했습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainSceneWithLogin.this, "기능을 취소했습니다.", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .create()
@@ -313,53 +313,24 @@ public class Main2Activity extends AppCompatActivity
 
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-        dcimPath += "/Camera";
-
         File[] pics = dcim.listFiles();
 
-        /*if(pics != null){
-            for(File pic : pics)
-            {
-                testText.setText(pic.getName());
-            }
-        }*/
 
         String[] fileList = getFileList(dcimPath);
-
-        //      int a = fileList.length;
-
-//        String b = String.valueOf(a);
-
-//        testText.setText(b);
-
-        Log.d("FileLength", "??");
-
-        Log.d("로그", "로oo그");
-
-        //
 
         for(int i = 0; i < fileList.length; i++)
         {
             try {
 
 
-
-//                testText.setText(dcimPath + "/" + fileList[i]);
-
                 ExifInterface exif = new ExifInterface(dcimPath + "/" + fileList[i]);
 
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);
 
-               /* TextView lati = (TextView)findViewById(R.id.lati);
-                lati.setText(latitude);
-                TextView longi = (TextView)findViewById(R.id.longi);
-                longi.setText(longitude);*/
 
                 if(latitude == null) {
-                    //    longi.setText("what the hell");
 
-                    continue;
                 }
 
                 Log.d("lenth",String.valueOf(i));

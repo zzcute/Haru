@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,10 +16,17 @@ import android.media.ExifInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,12 +49,12 @@ import java.util.List;
 
 import static com.example.zzz.myapplication.R.id.map;
 
-public class MainActivity extends AppCompatActivity
-        implements OnMapReadyCallback , GoogleMap.OnMapClickListener{
+public class MainSceneWithoutLogin extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
     ToggleButton tb;
-   // TextView text;
-   // TextView testText;
+    // TextView text;
+    // TextView testText;
 
     double myLati = 37.56;
     double myLongi = 126.97;
@@ -65,30 +73,44 @@ public class MainActivity extends AppCompatActivity
     TextView mTextMsg;
     ListView mListFile;
     ArrayList<String> mArFile;
-    //TextView testText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_scene_without_login);
+
+
+        ImageButton listButton = (ImageButton)findViewById(R.id.listButton);
+
+        listButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         getAcessForLocation();
 
         tb = (ToggleButton) findViewById(R.id.toggleButton);
 //        text = (TextView) findViewById(R.id.gpsState);
-  //      testText = (TextView)findViewById(R.id.testText);
+        //      testText = (TextView)findViewById(R.id.testText);
 
         lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-        //ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-
-        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_READ_CONTEXT);
 
         tb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     if(tb.isChecked()) {
+
+                        tb.setBackgroundResource(R.mipmap.keyword);
 
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 1,
@@ -100,6 +122,7 @@ public class MainActivity extends AppCompatActivity
                                 mLocationListener);
                     }
                     else{
+                        tb.setBackgroundResource(R.mipmap.location);
                         lm.removeUpdates(mLocationListener);
                     }
 
@@ -118,28 +141,70 @@ public class MainActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
 
-       /*Button plusButton = (Button)findViewById(R.id.plusButton);
-
-        plusButton.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v) {
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(++zoomLevel);
-                mGoogleMap.animateCamera(zoom);
-            }
-        });
-
-      //  Button minusButton = (Button)findViewById(R.id.minusButton);
-
-        minusButton.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(--zoomLevel);
-                mGoogleMap.animateCamera(zoom);
-            }
-        });*/
-
         arrayPoint = new ArrayList<LatLng>();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_scene_without_login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_login) {
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    LoginActivity.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
 
 
-        //mGoogleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+        } else if (id == R.id.nav_register) {
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    RegisterActivity.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
+
+        } else if(id == R.id.nav_test){
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    MainSceneWithLogin.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     public void getAcessForLocation()
@@ -153,7 +218,7 @@ public class MainActivity extends AppCompatActivity
                 if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION))
                 {
                     //AlertDialog.Builder a;
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainSceneWithoutLogin.this);
 
                     dialog.setTitle("권한이 필요합니다")
                             .setMessage("이 기능을 사용하기 위해서 위치 권한이 필요합니다")
@@ -169,7 +234,7 @@ public class MainActivity extends AppCompatActivity
                             .setNegativeButton("아니요", new DialogInterface.OnClickListener(){
                                 @Override
                                 public void onClick(DialogInterface dialog, int which){
-                                    Toast.makeText(MainActivity.this, "기능을 취소했습니다.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MainSceneWithoutLogin.this, "기능을 취소했습니다.", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .create()
@@ -226,36 +291,15 @@ public class MainActivity extends AppCompatActivity
 
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-        //dcimPath += "/Camera";
-
         File[] pics = dcim.listFiles();
 
-        /*if(pics != null){
-            for(File pic : pics)
-            {
-                testText.setText(pic.getName());
-            }
-        }*/
 
         String[] fileList = getFileList(dcimPath);
-
-  //      int a = fileList.length;
-
-//        String b = String.valueOf(a);
-
-//        testText.setText(b);
-
-        Log.d("FileLength", "??");
-
-        Log.d("로그", "로oo그");
-
-        //
 
         for(int i = 0; i < fileList.length; i++)
         {
             try {
 
-//                testText.setText(dcimPath + "/" + fileList[i]);
 
                 ExifInterface exif = new ExifInterface(dcimPath + "/" + fileList[i]);
 
@@ -263,18 +307,11 @@ public class MainActivity extends AppCompatActivity
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);
 
 
-               /* TextView lati = (TextView)findViewById(R.id.lati);
-                lati.setText(latitude);
-                TextView longi = (TextView)findViewById(R.id.longi);
-                longi.setText(longitude);*/
-
                 if(latitude == null) {
-                //    longi.setText("what the hell");
 
-                    continue;
                 }
 
-                Bitmap bMap = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
+                Log.d("lenth",String.valueOf(i));
 
                 float latitudeInt = convertToDegree(latitude);
                 float longitudeInt = convertToDegree(longitude);
@@ -290,6 +327,7 @@ public class MainActivity extends AppCompatActivity
                 map.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                 map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
+                map.animateCamera(CameraUpdateFactory.zoomTo(15));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -343,19 +381,19 @@ public class MainActivity extends AppCompatActivity
 
         public void onProviderDisabled(String provider) {
             // Disabled시
-         //   text.setText("수신중");
+            //   text.setText("수신중");
             Log.d("test", "onProviderDisabled, provider:" + provider);
         }
 
         public void onProviderEnabled(String provider) {
             // Enabled시
-          //  text.setText("수신완료");
+            //  text.setText("수신완료");
             Log.d("test", "onProviderEnabled, provider:" + provider);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
             // 변경시
-       //     text.setText("위치변경");
+            //     text.setText("위치변경");
             Log.d("test", "onStatusChanged, provider:" + provider + ", status:" + status + " ,Bundle:" + extras);
         }
     };
@@ -376,7 +414,6 @@ public class MainActivity extends AppCompatActivity
     public String[] getFileList(String strPath){
 
         File fileRoot = new File(strPath);
-
 
         if(fileRoot.isDirectory() == false)
             return null;
@@ -425,8 +462,4 @@ public class MainActivity extends AppCompatActivity
         return result;
 
     };
-
-
 }
-
-

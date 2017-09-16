@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.zzz.myapplication.Main2Activity">
+    tools:context="com.example.zzz.myapplication.MainSceneWithLogin">
 
     <include
         android:id="@+id/include2"
-        layout="@layout/content_main2"
+        layout="@layout/content_main_scene_with_login"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 

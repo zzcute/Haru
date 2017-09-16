@@ -21,10 +21,9 @@
             android:value="AIzaSyBQgeFMmF4XzQwjfrb-66VnzEyp2v_h3AM" />
 
         <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
+            android:name=".MainSceneWithoutLogin"
+            android:label="@string/title_activity_main_scene_without_login"
             android:theme="@style/Theme.AppCompat.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,8 +34,10 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterCompleteActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity"/>
-
+        <activity
+            android:name=".MainSceneWithLogin"
+            android:label="@string/title_activity_main_scene_with_login"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
     </application>
 
 </manifest>
