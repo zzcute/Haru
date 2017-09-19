@@ -5,9 +5,11 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,7 +28,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -42,22 +43,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import java.util.Date;
 
 import static com.example.zzz.myapplication.R.id.map;
 
 public class MainSceneWithoutLogin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener {
+
+    TextView mTextMessage;
+    ImageGallery mComplexGallery;
 
     ToggleButton tb;
 
@@ -79,10 +84,15 @@ public class MainSceneWithoutLogin extends AppCompatActivity
     ListView mListFile;
     ArrayList<String> mArFile;
 
+    String loadDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene_without_login);
+
+        mTextMessage=(TextView)findViewById(R.id.textMessage);
+        mComplexGallery=(ImageGallery)findViewById(R.id.imageGallery1);
 
         getAcessForSave();
         getAcessForLocation();
@@ -101,21 +111,88 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         arrayPoint = new ArrayList<LatLng>();
     }
 
-    public void setShowPictureButton()
+    @Override
+    protected  void onDestroy(){
+        super.onDestroy();
+        Log.d("Exit", "isExit?");
+
+    }
+
+
+   /* public void setShowPictureButton()
     {
         Button button = (Button)findViewById(R.id.mapButton);
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //mGoogleMap.clear();
+                mGoogleMap.clear();
                 polylineOptions = new PolylineOptions();
                 polylineOptions.color(Color.argb((int)(255 * 0.5), 46, 43, 61));
                 polylineOptions.width(10);
+                polylineOptions.addAll(arrayPoint);
                 mGoogleMap.addPolyline(polylineOptions);
                 getPictureFromSD();
+                savePosition();
             }
         });
+    }*/
+
+    public void savePosition()
+    {
+        SharedPreferences pref = getSharedPreferences("Position", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = pref.edit();
+
+        String date = getDateString();
+
+        int size = arrayPoint.size();
+
+        Log.d("saveSize", String.valueOf(size));
+
+        editor.putInt(date + "size", size);
+
+        for(int i = 0; i < size; i++) {
+            editor.putFloat(date + "lati" + i, (float)arrayPoint.get(i).latitude);
+            editor.putFloat(date + "loggi" + i, (float)arrayPoint.get(i).longitude);
+        }
+
+        editor.commit();
+        //Gson gson = new Gson();
+
+    }
+
+    public void loadPosition()
+    {
+        String date = getDateString();
+
+        SharedPreferences pref = getSharedPreferences("Position", Context.MODE_PRIVATE);
+
+        int size = pref.getInt(date + "size", 0);
+
+        Log.d("size", String.valueOf(size));
+
+        if(size == 0)
+            return;
+
+        arrayPoint.clear();
+
+        for(int i = 0; i < size; i++)
+        {
+            double lati = (double)pref.getFloat(date + "lati" + i, 0);
+            double longi = (double)pref.getFloat(date + "longi" + i, 0);
+
+            LatLng latLng = new LatLng(lati, longi);
+
+            arrayPoint.add(latLng);
+        }
+
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.addAll(arrayPoint);
+
+        mGoogleMap.clear();
+        mGoogleMap.addPolyline(polylineOptions);
     }
 
     public void saveFile()
@@ -123,11 +200,39 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         try {
             String FileName = "SaveFile" + getDateString();
             FileOutputStream os = openFileOutput(FileName, MODE_PRIVATE);
-            ObjectOutputStream a;
 
-            //os.write();
+            String saveList = arrayPoint.toString();
+
+            os.write(saveList.getBytes());
+            os.close();
+
         }
         catch(IOException e) {
+
+        }
+    }
+
+    public void LoadFile()
+    {
+        try{
+            String FileName = "SaveFile" + getDateString();
+            FileInputStream os = openFileInput(FileName);
+
+            InputStreamReader inputStreamReader = new InputStreamReader(os);
+
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            //Byte a = os.read();
+
+        }
+        catch (IOException e){
 
         }
     }
@@ -252,16 +357,20 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                     getApplicationContext(), // 현재 화면의 제어권자
                     RegisterActivity.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-
         } else if(id == R.id.nav_test){
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
                     MainSceneWithLogin.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-        } else if(id == R.id.nav_calender){
+        } else if(id == R.id.nav_calender) {
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
                     CalendarViewExample.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
+        } else if(id == R.id.nav_test){
+            Intent intent = new Intent(
+                    getApplicationContext(),
+                    SearchLocationByKeyword.class);
             startActivity(intent);
         }
 
@@ -384,8 +493,9 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         map.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
         map.animateCamera(CameraUpdateFactory.zoomTo(15));
 
+        loadPosition();
 
-        setShowPictureButton();
+        //setShowPictureButton();
         //사진 불러오기
         getPictureFromSD();
     }
@@ -427,6 +537,9 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 Bitmap bmp = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
                 Bitmap smallMarker = Bitmap.createScaledBitmap(bmp, 84, 84, false);
 
+                Canvas canvas = new Canvas(smallMarker);
+
+                mComplexGallery.draw(canvas);
 
                 //bmp.setHeight(1);
                 //bmp.setWidth(1);

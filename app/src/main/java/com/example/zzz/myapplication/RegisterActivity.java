@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,11 +42,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                Log.d("Test", "망해");
                 userEmail = emailText.getText().toString();
                 String userID = idText.getText().toString();
                 String userPassword = passwordText.getText().toString();
                 String Verify = "N";
-                String imageSource = "NULL";
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -77,7 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-                RegisterRequest registerRequest = new RegisterRequest(userEmail, userID, userPassword, Verify, imageSource, responseListener);
+                RegisterRequest registerRequest = new RegisterRequest(userEmail, userID, userPassword, Verify, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest); //버튼을 클릭했을때 registerRequest가 실행
             }

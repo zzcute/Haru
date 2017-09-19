@@ -5,17 +5,21 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,6 +31,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,20 +46,34 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.zzz.myapplication.R.id.map;
 
 public class MainSceneWithLogin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
+    private static int PICK_IMAGE_REQUEST = 1;
+    ImageView imgView;
+    static final String TAG = "MainActivity";
+
+    ImageView logoImage;
+
+    TextView mTextMessage;
+    ImageGallery mComplexGallery;
+
     ToggleButton tb;
-    // TextView text;
-    // TextView testText;
 
     double myLati = 37.56;
     double myLongi = 126.97;
@@ -74,18 +93,251 @@ public class MainSceneWithLogin extends AppCompatActivity
     ListView mListFile;
     ArrayList<String> mArFile;
 
+    String loadDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene_with_login);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+       // setContentView(R.layout.nav_header_main_scene_with_login);
 
-        // ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-        //       this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //drawer.setDrawerListener(toggle);
-        //toggle.syncState();
+        mTextMessage=(TextView)findViewById(R.id.textMessage);
+        mComplexGallery=(ImageGallery)findViewById(R.id.imageGallery1);
 
+        getAcessForSave();
+        getAcessForLocation();
+        getDateString();
+
+        setNavMenu();
+
+       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+       // View headerView = navigationView.inflateHeaderView(R.layout.nav_header_main_scene_with_login);
+
+        //logoImage = (ImageView)headerView.findViewById(R.id.profileImage);
+
+        setLogoButton();
+
+        setToggleButton();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        final MapFragment mapFragment = (MapFragment)fragmentManager
+                .findFragmentById(map);
+        mapFragment.getMapAsync(this);
+
+
+        arrayPoint = new ArrayList<LatLng>();
+    }
+
+    @Override
+    protected  void onDestroy(){
+        super.onDestroy();
+        Log.d("Exit", "isExit?");
+
+    }
+
+    public void setLogoButton()
+    {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View header=navigationView.getHeaderView(0);
+
+        logoImage = (ImageView)header.findViewById(R.id.profileImage);
+
+        logoImage.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                loadImagefromGallery(view);
+            }
+        });
+    }
+
+
+    public void loadImagefromGallery(View view) {
+        //Intent 생성
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT); //ACTION_PIC과 차이점?
+        intent.setType("image/*"); //이미지만 보이게
+        //Intent 시작 - 갤러리앱을 열어서 원하는 이미지를 선택할 수 있다.
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    //이미지 선택작업을 후의 결과 처리
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            //이미지를 하나 골랐을때
+            if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && null != data) {
+                //data에서 절대경로로 이미지를 가져옴
+                Uri uri = data.getData();
+
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),uri);
+                //이미지가 한계이상(?) 크면 불러 오지 못하므로 사이즈를 줄여 준다.
+                int nh = (int) (bitmap.getHeight() * (1024.0 / bitmap.getWidth()));
+                Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1024, nh, true);
+
+                imgView = (ImageView) findViewById(R.id.profileImage);
+                imgView.setImageBitmap(scaled);
+
+            } else {
+                Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_LONG).show();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Oops! 로딩에 오류가 있습니다.", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setMainRepairButton()
+    {
+        ImageView button = (ImageView)findViewById(R.id.mainName);
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mGoogleMap.clear();
+                polylineOptions = new PolylineOptions();
+                polylineOptions.color(Color.argb((int)(255 * 0.5), 46, 43, 61));
+                polylineOptions.width(10);
+                polylineOptions.addAll(arrayPoint);
+                mGoogleMap.addPolyline(polylineOptions);
+                getPictureFromSD();
+                savePosition();
+            }
+        });
+    }
+
+
+   /* public void setShowPictureButton()
+    {
+        Button button = (Button)findViewById(R.id.mapButton);
+
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mGoogleMap.clear();
+                polylineOptions = new PolylineOptions();
+                polylineOptions.color(Color.argb((int)(255 * 0.5), 46, 43, 61));
+                polylineOptions.width(10);
+                polylineOptions.addAll(arrayPoint);
+                mGoogleMap.addPolyline(polylineOptions);
+                getPictureFromSD();
+                savePosition();
+            }
+        });
+    }*/
+
+    public void savePosition()
+    {
+        SharedPreferences pref = getSharedPreferences("Position", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = pref.edit();
+
+        String date = getDateString();
+
+        int size = arrayPoint.size();
+
+        Log.d("saveSize", String.valueOf(size));
+
+        editor.putInt(date + "size", size);
+
+        for(int i = 0; i < size; i++) {
+            editor.putFloat(date + "lati" + i, (float)arrayPoint.get(i).latitude);
+            editor.putFloat(date + "loggi" + i, (float)arrayPoint.get(i).longitude);
+        }
+
+        editor.commit();
+        //Gson gson = new Gson();
+
+    }
+
+    public void loadPosition()
+    {
+        String date = getDateString();
+
+        SharedPreferences pref = getSharedPreferences("Position", Context.MODE_PRIVATE);
+
+        int size = pref.getInt(date + "size", 0);
+
+        Log.d("size", String.valueOf(size));
+
+        if(size == 0)
+            return;
+
+        arrayPoint.clear();
+
+        for(int i = 0; i < size; i++)
+        {
+            double lati = (double)pref.getFloat(date + "lati" + i, 0);
+            double longi = (double)pref.getFloat(date + "longi" + i, 0);
+
+            LatLng latLng = new LatLng(lati, longi);
+
+            arrayPoint.add(latLng);
+        }
+
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.addAll(arrayPoint);
+
+        mGoogleMap.clear();
+        mGoogleMap.addPolyline(polylineOptions);
+    }
+
+    public void saveFile()
+    {
+        try {
+            String FileName = "SaveFile" + getDateString();
+            FileOutputStream os = openFileOutput(FileName, MODE_PRIVATE);
+
+            String saveList = arrayPoint.toString();
+
+            os.write(saveList.getBytes());
+            os.close();
+
+        }
+        catch(IOException e) {
+
+        }
+    }
+
+    public void LoadFile()
+    {
+        try{
+            String FileName = "SaveFile" + getDateString();
+            FileInputStream os = openFileInput(FileName);
+
+            InputStreamReader inputStreamReader = new InputStreamReader(os);
+
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+
+            //Byte a = os.read();
+
+        }
+        catch (IOException e){
+
+        }
+    }
+
+    public String getDateString()
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+        String str_date = df.format(new Date());
+
+        Log.d("tag", str_date);
+
+        return str_date;
+    }
+
+    public void setNavMenu()
+    {
         ImageButton listButton = (ImageButton)findViewById(R.id.listButton);
 
         listButton.setOnClickListener(new View.OnClickListener(){
@@ -101,17 +353,16 @@ public class MainSceneWithLogin extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        getAcessForLocation();
+    }
 
+    public void setToggleButton()
+    {
         tb = (ToggleButton) findViewById(R.id.toggleButton);
 //        text = (TextView) findViewById(R.id.gpsState);
         //      testText = (TextView)findViewById(R.id.testText);
 
         lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-        //ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-
-        //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_READ_CONTEXT);
 
         tb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,32 +394,6 @@ public class MainSceneWithLogin extends AppCompatActivity
             }
 
         });
-
-        FragmentManager fragmentManager = getFragmentManager();
-        final MapFragment mapFragment = (MapFragment)fragmentManager
-                .findFragmentById(map);
-        mapFragment.getMapAsync(this);
-
-
-       /*Button plusButton = (Button)findViewById(R.id.plusButton);
-
-        plusButton.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v) {
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(++zoomLevel);
-                mGoogleMap.animateCamera(zoom);
-            }
-        });
-
-      //  Button minusButton = (Button)findViewById(R.id.minusButton);
-
-        minusButton.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(--zoomLevel);
-                mGoogleMap.animateCamera(zoom);
-            }
-        });*/
-
-        arrayPoint = new ArrayList<LatLng>();
     }
 
     @Override
@@ -214,19 +439,66 @@ public class MainSceneWithLogin extends AppCompatActivity
                     getApplicationContext(), // 현재 화면의 제어권자
                     LoginActivity.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-
-
         } else if (id == R.id.nav_register) {
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
                     RegisterActivity.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-
+        } else if(id == R.id.nav_calender){
+            Intent intent = new Intent(
+                    getApplicationContext(), // 현재 화면의 제어권자
+                    CalendarViewExample.class); // 다음 넘어갈 클래스 지정
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getAcessForSave()
+    {
+        if(Build.VERSION.SDK_INT == Build.VERSION_CODES.M)
+        {
+            int permisionResult = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if(permisionResult == PackageManager.PERMISSION_DENIED)
+            {
+                if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                {
+                    //AlertDialog.Builder a;
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(MainSceneWithLogin.this);
+
+                    dialog.setTitle("권한이 필요합니다")
+                            .setMessage("이 기능을 사용하기 위해서 저장 권한이 필요합니다")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which){
+                                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                                    {
+                                        requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+                                    }
+                                }
+                            })
+                            .setNegativeButton("아니요", new DialogInterface.OnClickListener(){
+                                @Override
+                                public void onClick(DialogInterface dialog, int which){
+                                    Toast.makeText(MainSceneWithLogin.this, "기능을 취소했습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .create()
+                            .show();
+
+
+
+                }
+                else
+                {
+                    requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
+                }
+            }
+
+        }
     }
 
     public void getAcessForLocation()
@@ -298,15 +570,16 @@ public class MainSceneWithLogin extends AppCompatActivity
         map.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
         map.animateCamera(CameraUpdateFactory.zoomTo(15));
 
+        loadPosition();
+
+        setMainRepairButton();
+        //setShowPictureButton();
         //사진 불러오기
+        getPictureFromSD();
+    }
 
-        if(isSdCard() == false)
-            finish();
-
-        //mTextMsg = (TextView)findViewById(R.id.textMessage);
-
-//        testText = (TextView)findViewById(R.id.testText);
-
+    public void getPictureFromSD()
+    {
         mRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
         //mTextMsg.setText(mRoot);
         File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
@@ -342,14 +615,18 @@ public class MainSceneWithLogin extends AppCompatActivity
                 Bitmap bmp = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
                 Bitmap smallMarker = Bitmap.createScaledBitmap(bmp, 84, 84, false);
 
+                Canvas canvas = new Canvas(smallMarker);
+
+                mComplexGallery.draw(canvas);
+
 
                 //bmp.setHeight(1);
                 //bmp.setWidth(1);
 
-                map.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-                map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
-                map.animateCamera(CameraUpdateFactory.zoomTo(15));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
+                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -357,8 +634,6 @@ public class MainSceneWithLogin extends AppCompatActivity
             }
 
         }
-
-
     }
 
     private void ReadSDCard(){
@@ -379,7 +654,6 @@ public class MainSceneWithLogin extends AppCompatActivity
 
     private final LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-
 
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();

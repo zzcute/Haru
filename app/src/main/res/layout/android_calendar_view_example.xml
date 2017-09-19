@@ -19,11 +19,6 @@
         android:text="취소"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <activity
-        android:name="MyOtherActivity"
-        android:label="@string/app_name">
-    </activity>
-
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"

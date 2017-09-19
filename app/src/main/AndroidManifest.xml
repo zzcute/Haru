@@ -34,10 +34,13 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterCompleteActivity" />
         <activity android:name=".LoginActivity" />
+        <activity android:name=".CalendarViewExample" />
         <activity
             android:name=".MainSceneWithLogin"
             android:label="@string/title_activity_main_scene_with_login"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ImageGallery" />
+        <activity android:name=".SearchLocationByKeyword"></activity>
     </application>
 
 </manifest>
