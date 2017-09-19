@@ -434,17 +434,17 @@ public class MainSceneWithLogin extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_login) {
+        if (id == R.id.nav_search_location) {
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
-                    LoginActivity.class); // 다음 넘어갈 클래스 지정
+                    SearchLocationByKeyword.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-        } else if (id == R.id.nav_register) {
+        } else if (id == R.id.nav_search_keyword) {
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
-                    RegisterActivity.class); // 다음 넘어갈 클래스 지정
+                    SearchLocationByKeyword.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-        } else if(id == R.id.nav_calender){
+        } else if(id == R.id.nav_search_date){
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
                     CalendarViewExample.class); // 다음 넘어갈 클래스 지정

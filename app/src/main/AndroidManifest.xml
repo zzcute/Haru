@@ -18,7 +18,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBQgeFMmF4XzQwjfrb-66VnzEyp2v_h3AM" />
+            android:value="AIzaSyCubw2JNjNg8AWW27bDXVI3bR6itXP7RxQ" />
 
         <activity
             android:name=".MainSceneWithoutLogin"

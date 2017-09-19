@@ -8,16 +8,19 @@
 
         <item
 
-            android:id="@+id/nav_search_date"
-            android:title="날짜 검색" />
-
-        <item
             android:id="@+id/nav_search_location"
-            android:title="위치 검색" />
+            android:title="지역 검색"
+            android:icon="@mipmap/location"/>
 
         <item
-            android:id="@+id/nav_search_location_keyword"
-            android:title="키워드로 위치 검색" />
+            android:id="@+id/nav_search_keyword"
+            android:title="키워드 검색"
+            android:icon="@mipmap/keyword"/>
+
+        <item
+            android:id="@+id/nav_search_date"
+            android:title="날짜 검색"
+            android:icon="@mipmap/calendar"/>
 
     </group>
 
