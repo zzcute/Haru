@@ -411,9 +411,6 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                             })
                             .create()
                             .show();
-
-
-
                 }
                 else
                 {
@@ -469,6 +466,24 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 1000 :
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // 권한 허가
+
+// 해당 권한을 사용해서 작업을 진행할 수 있습니다
+                } else {
+                    // 권한 거부
+// 사용자가 해당권한을 거부했을때 해주어야 할 동작을 수행합니다
+                }
+                return;
+        }
+    }
 
     @Override
     public void onMapClick(LatLng latLng) {

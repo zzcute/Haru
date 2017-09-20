@@ -13,6 +13,11 @@ public class SearchLocationByKeyword  extends AppCompatActivity {
 
     }
 
+
+
+
+
+
     /*
      * In this method, Start PlaceAutocomplete activity
      * PlaceAutocomplete activity provides--
