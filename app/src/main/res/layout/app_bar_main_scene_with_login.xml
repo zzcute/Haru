@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="com.example.zzz.myapplication.MainSceneWithLogin">
 
     <include
@@ -15,7 +16,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

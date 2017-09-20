@@ -12,9 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#ffffff"
         tools:context="com.example.psk93.imagegalleryex.MainActivity">
 
         <android.support.constraint.ConstraintLayout
+            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="0dp"
@@ -44,13 +46,13 @@
 
             <ToggleButton
                 android:id="@+id/toggleButton"
-                android:layout_width="37dp"
-                android:layout_height="41dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginRight="28dp"
                 android:layout_marginStart="27dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="118dp"
                 android:background="@mipmap/mylocation"
                 android:text="ToggleButton"
                 android:textOff=" "
@@ -68,7 +70,7 @@
             <ImageView
                 android:id="@+id/mainName"
                 android:layout_width="162dp"
-                android:layout_height="22dp"
+                android:layout_height="18dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -117,7 +119,7 @@
             android:id="@+id/imageGallery1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/textMessage"
             android:layout_alignParentStart="true" />
     </RelativeLayout>
 

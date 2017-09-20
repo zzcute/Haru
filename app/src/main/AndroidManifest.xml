@@ -21,15 +21,23 @@
             android:value="AIzaSyB9KqlLNklbqx7r45eb3qy-56JgLjy-XS8" />
 
         <activity
-            android:name=".MainSceneWithoutLogin"
-            android:label="@string/title_activity_main_scene_without_login"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:name=".SplashScreen"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity-->
+            <!--android:name=".MainSceneWithoutLogin"-->
+            <!--android:label="@string/title_activity_main_scene_without_login"-->
+            <!--android:theme="@style/Theme.AppCompat.NoActionBar">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity android:name=".JoinActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".RegisterCompleteActivity" />
@@ -38,7 +46,12 @@
         <activity
             android:name=".MainSceneWithLogin"
             android:label="@string/title_activity_main_scene_with_login"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAINACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ImageGallery" />
         <activity android:name=".SearchLocationByKeyword" />
         <activity android:name=".SearchLocationByLocation"></activity>

@@ -20,7 +20,6 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp">
 
-
             <fragment
                 android:id="@+id/map"
                 class="com.google.android.gms.maps.MapFragment"

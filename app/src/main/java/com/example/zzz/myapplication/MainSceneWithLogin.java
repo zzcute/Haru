@@ -127,7 +127,6 @@ public class MainSceneWithLogin extends AppCompatActivity
                 .findFragmentById(map);
         mapFragment.getMapAsync(this);
 
-
         arrayPoint = new ArrayList<LatLng>();
     }
 
@@ -197,7 +196,7 @@ public class MainSceneWithLogin extends AppCompatActivity
             return null;
         }
         float radius = bitmap.getWidth() > bitmap.getHeight() ? ((float) bitmap
-                .getHeight()) / 2f : ((float) bitmap.getWidth()) / 2f;
+                .getHeight()) / 1.5f : ((float) bitmap.getWidth()) / 1.5f;
         Bitmap canvasBitmap = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,

@@ -281,7 +281,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 try {
                     if(tb.isChecked()) {
 
-                        tb.setBackgroundResource(R.mipmap.keyword);
+                        tb.setBackgroundResource(R.mipmap.mylocation_ing);
 
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 1,
@@ -293,7 +293,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                                 mLocationListener);
                     }
                     else{
-                        tb.setBackgroundResource(R.mipmap.location);
+                        tb.setBackgroundResource(R.mipmap.mylocation);
                         lm.removeUpdates(mLocationListener);
                     }
 
