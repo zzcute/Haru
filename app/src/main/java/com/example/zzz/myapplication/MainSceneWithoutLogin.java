@@ -523,6 +523,8 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
+        dcimPath += "/Camera";
+
         String[] fileList = getFileList(dcimPath);
 
         for(int i = 0; i < fileList.length; i++)
