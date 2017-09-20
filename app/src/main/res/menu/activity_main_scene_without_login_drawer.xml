@@ -9,7 +9,6 @@
         <item
 
             android:id="@+id/nav_login"
-
             android:title="로그인하기" />
 
         <item

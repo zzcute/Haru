@@ -628,7 +628,7 @@ public class MainSceneWithLogin extends AppCompatActivity
 
 
                 if(latitude == null) {
-
+                    return;
                 }
 
                 Log.d("lenth",String.valueOf(i));

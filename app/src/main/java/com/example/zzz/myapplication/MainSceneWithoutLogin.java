@@ -91,6 +91,8 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene_without_login);
 
+        Log.d("tag", "Start");
+
         mTextMessage=(TextView)findViewById(R.id.textMessage);
         mComplexGallery=(ImageGallery)findViewById(R.id.imageGallery1);
 
@@ -525,7 +527,11 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
         dcimPath += "/Camera";
 
+        Log.d("tag", dcimPath);
+
         String[] fileList = getFileList(dcimPath);
+
+        Log.d("LengthOfFile", String.valueOf(fileList.length));
 
         for(int i = 0; i < fileList.length; i++)
         {
@@ -535,10 +541,13 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);
 
+                Log.d("tag",String.valueOf(i));
 
                 if(latitude == null) {
-
+                    return;
                 }
+
+                Log.d("tag",String.valueOf(i));
 
                 float latitudeInt = convertToDegree(latitude);
                 float longitudeInt = convertToDegree(longitude);
@@ -546,14 +555,14 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 Bitmap bmp = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
                 Bitmap smallMarker = Bitmap.createScaledBitmap(bmp, 84, 84, false);
 
-                Canvas canvas = new Canvas(smallMarker);
-
-                mComplexGallery.draw(canvas);
-
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
                 mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+                Canvas canvas = new Canvas(smallMarker);
+
+                mComplexGallery.draw(canvas);
 
             } catch (IOException e) {
                 e.printStackTrace();
