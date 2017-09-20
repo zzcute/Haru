@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,12 +25,10 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         Intent intent = getIntent();
-        userEmail = intent.getStringExtra("Email");
 
-        final EditText emailText = (EditText)findViewById(R.id.emailText);
         final EditText idText = (EditText)findViewById(R.id.idText);
         final EditText passwordText = (EditText)findViewById(R.id.passwordText);
-        emailText.setText(userEmail);
+        final EditText passwordCheckText = (EditText)findViewById(R.id.passwordCheckText);
 
         Button nextButton = (Button) findViewById(R.id.nextButton);
 
@@ -42,11 +39,9 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                Log.d("Test", "망해");
-                userEmail = emailText.getText().toString();
                 String userID = idText.getText().toString();
                 String userPassword = passwordText.getText().toString();
-                String Verify = "N";
+                String userPasswordCheck = passwordCheckText.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -57,17 +52,13 @@ public class RegisterActivity extends AppCompatActivity {
                             boolean result = jsonResponse.getBoolean("result");
 
                             if(result) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("회원 등록에 성공하였습니다."+result)
-                                        .setPositiveButton("확인",null)
-                                        .create()
-                                        .show();
+
                                 Intent intent = new Intent(RegisterActivity.this, RegisterCompleteActivity.class);
                                 RegisterActivity.this.startActivity(intent);
                             }
                             else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("회원 등록에 실패하였습니다."+result)
+                                builder.setMessage("입력하신 아이디가 이미 사용중입니다.")
                                         .setNegativeButton("다시 시도",null)
                                         .create()
                                         .show();
@@ -78,9 +69,21 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     }
                 };
-                RegisterRequest registerRequest = new RegisterRequest(userEmail, userID, userPassword, Verify, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
-                queue.add(registerRequest); //버튼을 클릭했을때 registerRequest가 실행
+
+                if(userPassword.equals(userPasswordCheck)) {
+                    RegisterRequest registerRequest = new RegisterRequest(userID, userPassword, responseListener);
+                    RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
+                    queue.add(registerRequest); //버튼을 클릭했을때 registerRequest가 실행
+                }
+
+                else {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage("비밀번호와 비밀번호 확인이 일치하지 않습니다.")
+                            .setNegativeButton("다시 시도",null)
+                            .create()
+                            .show();
+                }
             }
         });
 

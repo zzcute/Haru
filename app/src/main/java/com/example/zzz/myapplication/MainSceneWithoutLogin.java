@@ -523,16 +523,11 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-        File[] pics = dcim.listFiles();
-
-
         String[] fileList = getFileList(dcimPath);
 
         for(int i = 0; i < fileList.length; i++)
         {
             try {
-
-
                 ExifInterface exif = new ExifInterface(dcimPath + "/" + fileList[i]);
 
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
@@ -543,11 +538,8 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
                 }
 
-                Log.d("lenth",String.valueOf(i));
-
                 float latitudeInt = convertToDegree(latitude);
                 float longitudeInt = convertToDegree(longitude);
-
 
                 Bitmap bmp = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
                 Bitmap smallMarker = Bitmap.createScaledBitmap(bmp, 84, 84, false);
@@ -555,9 +547,6 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 Canvas canvas = new Canvas(smallMarker);
 
                 mComplexGallery.draw(canvas);
-
-                //bmp.setHeight(1);
-                //bmp.setWidth(1);
 
                 mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));

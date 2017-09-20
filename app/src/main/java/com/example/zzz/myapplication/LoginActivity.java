@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,15 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         //로그인 버튼 눌러도 아무 것도 실행되지 않음
 
 
-/* 둘러보기 버튼 눌렀을 때 익명으로 로그인하기 구현
-        browseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String userID = "anonymous";
-                String userPassword = "anonymous";
-            }
-        });
-*/
         /*로그인 버튼*/
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,32 +46,32 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
-                            String result = jsonResponse.getString("result");
-                            if(result.equals("0")) {
-                                String userID = jsonResponse.getString("userID");
-                                String userPassword = jsonResponse.getString("userPassword");
 
-                                Intent nextIntent = new Intent(LoginActivity.this, MainSceneWithoutLogin.class);
+                            Log.d("Login", "Loading1234");
+
+                            boolean result = jsonResponse.getBoolean("result");
+
+                            Log.d("Login", "AfterLoading1234");
+
+                            if(result) {
+                                String userID = jsonResponse.getString("userID");
+                                //String userPassword = jsonResponse.getString("userPassword");
+
+                                Intent nextIntent = new Intent(LoginActivity.this, MainSceneWithLogin.class);
                                 nextIntent.putExtra("userID",userID);
-                                nextIntent.putExtra("userPassword",userPassword);
 
                                 LoginActivity.this.startActivity(nextIntent);
-                            } else if(result.equals("1")) {
+                            } else {
+                                Log.d("aa", "bbaacc111");
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("일치하는 로그인 정보가 없습니다.")
                                         .setNegativeButton("다시 시도",null)
                                         .create()
                                         .show();
                             }
-                            else if(result.equals("2")) {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("이메일이 인증되지 않은 사용자입니다.")
-                                        .setNegativeButton("다시 시도",null)
-                                        .create()
-                                        .show();
-                            }
                         }
                         catch(Exception e) {
+                            Log.d("d","돼지야");
                             e.printStackTrace();
                         }
                     }

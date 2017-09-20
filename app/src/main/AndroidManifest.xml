@@ -40,7 +40,8 @@
             android:label="@string/title_activity_main_scene_with_login"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".ImageGallery" />
-        <activity android:name=".SearchLocationByKeyword"></activity>
+        <activity android:name=".SearchLocationByKeyword" />
+        <activity android:name=".SearchLocationByLocation"></activity>
     </application>
 
 </manifest>
