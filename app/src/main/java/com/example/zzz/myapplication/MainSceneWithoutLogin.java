@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -544,7 +543,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 Log.d("tag",String.valueOf(i));
 
                 if(latitude == null) {
-                    return;
+                    continue;
                 }
 
                 Log.d("tag",String.valueOf(i));
@@ -560,9 +559,9 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
                 mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-                Canvas canvas = new Canvas(smallMarker);
+                //Canvas canvas = new Canvas(smallMarker);
 
-                mComplexGallery.draw(canvas);
+                //mComplexGallery.draw(canvas);
 
             } catch (IOException e) {
                 e.printStackTrace();
