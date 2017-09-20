@@ -56,6 +56,7 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Savepoint;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,7 +70,9 @@ public class MainSceneWithLogin extends AppCompatActivity
 
     private static int PICK_IMAGE_REQUEST = 1;
     ImageView imgView;
-    static final String TAG = "MainActivity";
+
+
+    String todayExif = getDateStringForExif();
 
     ImageView logoImage;
 
@@ -104,12 +107,13 @@ public class MainSceneWithLogin extends AppCompatActivity
         setContentView(R.layout.activity_main_scene_with_login);
        // setContentView(R.layout.nav_header_main_scene_with_login);
 
+        loadPosition();
+
         mTextMessage=(TextView)findViewById(R.id.textMessage);
         mComplexGallery=(ImageGallery)findViewById(R.id.imageGallery1);
 
         getAcessForSave();
         getAcessForLocation();
-        getDateString();
 
         setNavMenu();
 
@@ -133,7 +137,8 @@ public class MainSceneWithLogin extends AppCompatActivity
     @Override
     protected  void onDestroy(){
         super.onDestroy();
-        Log.d("Exit", "isExit?");
+
+        savePosition();
 
     }
 
@@ -227,7 +232,6 @@ public class MainSceneWithLogin extends AppCompatActivity
                 polylineOptions.addAll(arrayPoint);
                 mGoogleMap.addPolyline(polylineOptions);
                 getPictureFromSD();
-                savePosition();
             }
         });
     }
@@ -357,6 +361,14 @@ public class MainSceneWithLogin extends AppCompatActivity
         String str_date = df.format(new Date());
 
         Log.d("tag", str_date);
+
+        return str_date;
+    }
+
+    public String getDateStringForExif()
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy:MM:dd", Locale.KOREA);
+        String str_date = df.format(new Date());
 
         return str_date;
     }
@@ -611,46 +623,56 @@ public class MainSceneWithLogin extends AppCompatActivity
 
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
-        File[] pics = dcim.listFiles();
-
+        dcimPath += "/Camera";
+        Log.d("tag", dcimPath);
 
         String[] fileList = getFileList(dcimPath);
+
+        Log.d("tag", String.valueOf(fileList.length));
 
         for(int i = 0; i < fileList.length; i++)
         {
             try {
-
-
                 ExifInterface exif = new ExifInterface(dcimPath + "/" + fileList[i]);
 
+                String date = getTagString(ExifInterface.TAG_DATETIME, exif);
+
+                if(date == null)
+                    continue;
+
+                int idx = date.indexOf(" ");
+
+                String date2 = date.substring(0, idx);
+
+                if(date2 != todayExif)
+                {
+                    continue;
+                }
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);
 
+                Log.d("tag",String.valueOf(i));
 
                 if(latitude == null) {
-                    return;
+                    continue;
                 }
 
-                Log.d("lenth",String.valueOf(i));
-
+                Log.d("tag",String.valueOf(i));
                 float latitudeInt = convertToDegree(latitude);
                 float longitudeInt = convertToDegree(longitude);
-
 
                 Bitmap bmp = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
                 Bitmap smallMarker = Bitmap.createScaledBitmap(bmp, 84, 84, false);
 
-                Canvas canvas = new Canvas(smallMarker);
+                mComplexGallery.addImage(smallMarker, fileList[i]);
 
-                mComplexGallery.draw(canvas);
-
-                //bmp.setHeight(1);
-                //bmp.setWidth(1);
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
+                LatLng markerPosition = new LatLng(latitudeInt, longitudeInt);
+                mComplexGallery.list.add(markerPosition);
+                mGoogleMap.addMarker(new MarkerOptions().position(markerPosition).title(fileList[i]))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
                 mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
 
             } catch (IOException e) {
                 e.printStackTrace();

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -26,8 +27,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +61,7 @@ import java.util.Locale;
 import static com.example.zzz.myapplication.R.id.map;
 
 public class MainSceneWithoutLogin extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnTouchListener {
 
     TextView mTextMessage;
     ImageGallery mComplexGallery;
@@ -85,19 +88,22 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
     String loadDate;
 
+    String todayExif;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_scene_without_login);
 
-        Log.d("tag", "Start");
+        todayExif = getDateStringForExif();
+
+        Log.d("tagDay", todayExif);
 
         mTextMessage=(TextView)findViewById(R.id.textMessage);
         mComplexGallery=(ImageGallery)findViewById(R.id.imageGallery1);
 
         getAcessForSave();
         getAcessForLocation();
-        getDateString();
 
         setNavMenu();
 
@@ -117,6 +123,19 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         super.onDestroy();
         Log.d("Exit", "isExit?");
 
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event)
+    {
+        if(event.getAction() == MotionEvent.ACTION_UP)
+        {
+
+            Log.d("tag2","mComplexGallery.fileName");
+
+        }
+
+        return true;
     }
 
 
@@ -243,7 +262,14 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         String str_date = df.format(new Date());
 
-        Log.d("tag", str_date);
+
+        return str_date;
+    }
+
+    public String getDateStringForExif()
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy:MM:dd", Locale.KOREA);
+        String str_date = df.format(new Date());
 
         return str_date;
     }
@@ -502,7 +528,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
     public void onMapReady(final GoogleMap map) {
 
         mGoogleMap = map;
-
+        mComplexGallery.googleMap = map;
         LatLng myPosition = new LatLng(myLati, myLongi);
 
         //map.addMarker(new MarkerOptions().position(myPosition).title("Hi"));
@@ -525,18 +551,30 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
         dcimPath += "/Camera";
-
         Log.d("tag", dcimPath);
 
         String[] fileList = getFileList(dcimPath);
 
-        Log.d("LengthOfFile", String.valueOf(fileList.length));
+        Log.d("tag", String.valueOf(fileList.length));
 
         for(int i = 0; i < fileList.length; i++)
         {
             try {
                 ExifInterface exif = new ExifInterface(dcimPath + "/" + fileList[i]);
 
+                String date = getTagString(ExifInterface.TAG_DATETIME, exif);
+
+                if(date == null)
+                    continue;
+
+                int idx = date.indexOf(" ");
+
+                String date2 = date.substring(0, idx);
+
+                if(date2 != todayExif)
+                {
+                   continue;
+                }
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);
 
@@ -547,21 +585,21 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                 }
 
                 Log.d("tag",String.valueOf(i));
-
                 float latitudeInt = convertToDegree(latitude);
                 float longitudeInt = convertToDegree(longitude);
 
                 Bitmap bmp = BitmapFactory.decodeFile(dcimPath + "/" + fileList[i]);
                 Bitmap smallMarker = Bitmap.createScaledBitmap(bmp, 84, 84, false);
 
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(latitudeInt, longitudeInt)).title("Test"))
+                mComplexGallery.addImage(smallMarker, fileList[i]);
+
+                LatLng markerPosition = new LatLng(latitudeInt, longitudeInt);
+                mComplexGallery.list.add(markerPosition);
+                mGoogleMap.addMarker(new MarkerOptions().position(markerPosition).title(fileList[i]))
                         .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeInt, longitudeInt)));
                 mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
-                //Canvas canvas = new Canvas(smallMarker);
-
-                //mComplexGallery.draw(canvas);
 
             } catch (IOException e) {
                 e.printStackTrace();
