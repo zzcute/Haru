@@ -9,8 +9,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -175,7 +178,8 @@ public class MainSceneWithLogin extends AppCompatActivity
                 Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1024, nh, true);
 
                 imgView = (ImageView) findViewById(R.id.profileImage);
-                imgView.setImageBitmap(scaled);
+
+                imgView.setImageBitmap(getCircularBitmapFrom(scaled));
 
             } else {
                 Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_LONG).show();
@@ -186,6 +190,28 @@ public class MainSceneWithLogin extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+    public static Bitmap getCircularBitmapFrom(Bitmap bitmap) {
+        if (bitmap == null || bitmap.isRecycled()) {
+            return null;
+        }
+        float radius = bitmap.getWidth() > bitmap.getHeight() ? ((float) bitmap
+                .getHeight()) / 2f : ((float) bitmap.getWidth()) / 2f;
+        Bitmap canvasBitmap = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
+                Shader.TileMode.CLAMP);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setShader(shader);
+
+        Canvas canvas = new Canvas(canvasBitmap);
+
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                radius, paint);
+
+        return canvasBitmap;
     }
 
     public void setMainRepairButton()
@@ -370,7 +396,7 @@ public class MainSceneWithLogin extends AppCompatActivity
                 try {
                     if(tb.isChecked()) {
 
-                        tb.setBackgroundResource(R.mipmap.keyword);
+                        tb.setBackgroundResource(R.mipmap.mylocation_ing);
 
                         lm.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 1,
@@ -382,7 +408,7 @@ public class MainSceneWithLogin extends AppCompatActivity
                                 mLocationListener);
                     }
                     else{
-                        tb.setBackgroundResource(R.mipmap.location);
+                        tb.setBackgroundResource(R.mipmap.mylocation);
                         lm.removeUpdates(mLocationListener);
                     }
 
@@ -618,7 +644,6 @@ public class MainSceneWithLogin extends AppCompatActivity
                 Canvas canvas = new Canvas(smallMarker);
 
                 mComplexGallery.draw(canvas);
-
 
                 //bmp.setHeight(1);
                 //bmp.setWidth(1);
