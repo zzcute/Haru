@@ -53,6 +53,13 @@ public class SearchLocationByKeyword  extends FragmentActivity
             @Override
             public void onPlaceSelected(Place place) {
 
+
+                LatLng placePosition = place.getLatLng();
+
+                mGoogleMap.addMarker(new MarkerOptions().position(placePosition).title("Hi"));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(placePosition));
+                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
             }
 
             @Override
@@ -79,11 +86,6 @@ public class SearchLocationByKeyword  extends FragmentActivity
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(this, data);
 
-                LatLng placePosition = place.getLatLng();
-
-                mGoogleMap.addMarker(new MarkerOptions().position(placePosition).title("Hi"));
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(placePosition));
-                mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
                 //Log.i(TAG, "Place: " + place.getName());
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {

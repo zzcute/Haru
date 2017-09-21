@@ -106,7 +106,7 @@ public class MainSceneWithLogin extends AppCompatActivity
         setContentView(R.layout.activity_main_scene_with_login);
        // setContentView(R.layout.nav_header_main_scene_with_login);
 
-        loadPosition();
+        //loadPosition();
 
         mTextMessage=(TextView)findViewById(R.id.textMessage);
         mComplexGallery=(ImageGallery)findViewById(R.id.imageGallery1);
@@ -200,7 +200,7 @@ public class MainSceneWithLogin extends AppCompatActivity
             return null;
         }
         float radius = bitmap.getWidth() > bitmap.getHeight() ? ((float) bitmap
-                .getHeight()) / 1.5f : ((float) bitmap.getWidth()) / 1.5f;
+                .getHeight()) / 1f : ((float) bitmap.getWidth()) / 1f;
         Bitmap canvasBitmap = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         BitmapShader shader = new BitmapShader(bitmap, Shader.TileMode.CLAMP,
@@ -211,7 +211,7 @@ public class MainSceneWithLogin extends AppCompatActivity
 
         Canvas canvas = new Canvas(canvasBitmap);
 
-        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+        canvas.drawCircle(bitmap.getWidth() / 1, bitmap.getHeight() / 1,
                 radius, paint);
 
         return canvasBitmap;
@@ -470,12 +470,13 @@ public class MainSceneWithLogin extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_search_location) {
-            Intent intent = new Intent(
-                    getApplicationContext(), // 현재 화면의 제어권자
-                    SearchLocationByLocation.class); // 다음 넘어갈 클래스 지정
-            startActivity(intent);
-        } else if (id == R.id.nav_search_keyword) {
+//        if (id == R.id.nav_search_location) {
+//            Intent intent = new Intent(
+//                    getApplicationContext(), // 현재 화면의 제어권자
+//                    SearchLocationByLocation.class); // 다음 넘어갈 클래스 지정
+//            startActivity(intent);
+//        } else
+        if (id == R.id.nav_search_keyword) {
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
                     SearchLocationByKeyword.class); // 다음 넘어갈 클래스 지정

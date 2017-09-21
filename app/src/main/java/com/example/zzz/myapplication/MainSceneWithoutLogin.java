@@ -549,7 +549,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         String dcimPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
 
         dcimPath += "/Camera";
-        Log.d("tag", dcimPath);
+
 
         String[] fileList = getFileList(dcimPath);
 
@@ -576,7 +576,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
                 if(date2 != todayExif)
                 {
-                   continue;
+                   //continue;
                 }
                 String latitude = exif.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
                 String longitude = getTagString(ExifInterface.TAG_GPS_LONGITUDE, exif);

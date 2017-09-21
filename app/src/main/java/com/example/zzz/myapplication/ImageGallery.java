@@ -53,14 +53,14 @@ public class ImageGallery extends RelativeLayout implements View.OnTouchListener
 
     public void addImage(Bitmap bitmap, String fileName)
     {
-        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmap, 200, 200, false);
+        Bitmap smallMarker = Bitmap.createScaledBitmap(bitmap, 350, 350, false);
 
         ImageView imageView = new ImageView(mContext);
         imageView.setImageBitmap(smallMarker);
         mScrollLayout1.addView(imageView);
 
         ViewGroup.LayoutParams params=imageView.getLayoutParams();
-        params.width=200;
+        params.width=400;
 
         imageView.setOnTouchListener(this);
 
@@ -75,7 +75,7 @@ public class ImageGallery extends RelativeLayout implements View.OnTouchListener
         mScrollLayout1.addView(imageView);
 
         ViewGroup.LayoutParams params=imageView.getLayoutParams();
-        params.width=200;
+        params.width=400;
 
         imageView.setOnTouchListener(this);
 
