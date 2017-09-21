@@ -48,7 +48,7 @@ public class CalendarViewExample extends AppCompatActivity {
                 Intent intent = new Intent(
                         getApplicationContext(), // 현재 화면의 제어권자
                         MainSceneWithoutLogin.class); // 다음 넘어갈 클래스 지정
-                intent.putExtra("LoadDate", date);
+                //intent.putExtra("LoadDate", date);
                 startActivity(intent);
             }
         });
