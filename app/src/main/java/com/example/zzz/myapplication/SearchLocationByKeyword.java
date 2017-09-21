@@ -246,7 +246,7 @@ public class SearchLocationByKeyword  extends FragmentActivity
                     mGoogleMap.addMarker(new MarkerOptions().position(markerPosition).title(fileList[i]))
                             .setIcon(BitmapDescriptorFactory.fromBitmap(smallMarker));
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitudeDouble, longitudeDouble)));
-                    mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                    mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
                 }
 
                 else

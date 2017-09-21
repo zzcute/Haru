@@ -52,8 +52,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImageGallery" />
+        <activity android:name=".ImageGalleryForSearch" />
         <activity android:name=".SearchLocationByKeyword" />
-        <activity android:name=".SearchLocationByLocation"></activity>
+        </activity>
     </application>
 
 </manifest>
