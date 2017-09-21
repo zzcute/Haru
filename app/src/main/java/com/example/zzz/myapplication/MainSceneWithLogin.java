@@ -380,7 +380,8 @@ public class MainSceneWithLogin extends AppCompatActivity
             @Override
             public void onClick(View v){
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+                DrawerLayout drawer_white_layout = (DrawerLayout) findViewById(R.id.drawer_white_layout);
+                drawer_white_layout.setBackgroundColor(Color.WHITE);
                 drawer.openDrawer(Gravity.LEFT);
             }
         });

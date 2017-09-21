@@ -382,22 +382,23 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                     getApplicationContext(), // 현재 화면의 제어권자
                     RegisterActivity.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
-        } else if(id == R.id.nav_test){
-            Intent intent = new Intent(
-                    getApplicationContext(), // 현재 화면의 제어권자
-                    MainSceneWithLogin.class); // 다음 넘어갈 클래스 지정
-            startActivity(intent);
-        } else if(id == R.id.nav_calender) {
-            Intent intent = new Intent(
-                    getApplicationContext(), // 현재 화면의 제어권자
-                    CalendarViewExample.class); // 다음 넘어갈 클래스 지정
-            startActivity(intent);
-        } else if(id == R.id.nav_test){
-            Intent intent = new Intent(
-                    getApplicationContext(),
-                    SearchLocationByKeyword.class);
-            startActivity(intent);
         }
+//        else if(id == R.id.nav_test){
+//            Intent intent = new Intent(
+//                    getApplicationContext(), // 현재 화면의 제어권자
+//                    MainSceneWithLogin.class); // 다음 넘어갈 클래스 지정
+//            startActivity(intent);
+//        } else if(id == R.id.nav_calender) {
+//            Intent intent = new Intent(
+//                    getApplicationContext(), // 현재 화면의 제어권자
+//                    CalendarViewExample.class); // 다음 넘어갈 클래스 지정
+//            startActivity(intent);
+//        } else if(id == R.id.nav_test){
+//            Intent intent = new Intent(
+//                    getApplicationContext(),
+//                    SearchLocationByKeyword.class);
+//            startActivity(intent);
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
