@@ -56,7 +56,6 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Savepoint;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -627,6 +626,11 @@ public class MainSceneWithLogin extends AppCompatActivity
         Log.d("tag", dcimPath);
 
         String[] fileList = getFileList(dcimPath);
+
+        if(fileList == null)
+        {
+            return;
+        }
 
         Log.d("tag", String.valueOf(fileList.length));
 

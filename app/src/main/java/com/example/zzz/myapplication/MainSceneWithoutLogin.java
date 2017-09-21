@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
@@ -30,7 +29,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -554,6 +552,11 @@ public class MainSceneWithoutLogin extends AppCompatActivity
         Log.d("tag", dcimPath);
 
         String[] fileList = getFileList(dcimPath);
+
+        if(fileList == null)
+        {
+            return;
+        }
 
         Log.d("tag", String.valueOf(fileList.length));
 
