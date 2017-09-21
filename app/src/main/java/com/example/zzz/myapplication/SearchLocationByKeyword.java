@@ -53,6 +53,12 @@ public class SearchLocationByKeyword  extends FragmentActivity
 
         mGoogleMap = map;
 
+        LatLng position = new LatLng(126.97, 37.56);
+
+        mGoogleMap.addMarker(new MarkerOptions().position(position).title("marker"));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
