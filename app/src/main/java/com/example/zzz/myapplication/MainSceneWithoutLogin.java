@@ -316,6 +316,7 @@ public class MainSceneWithoutLogin extends AppCompatActivity
                                 1,
                                 100,
                                 mLocationListener);
+
                     }
                     else{
                         tb.setBackgroundResource(R.mipmap.mylocation);
@@ -640,11 +641,17 @@ public class MainSceneWithoutLogin extends AppCompatActivity
 
             LatLng myPosition = new LatLng(latitude, longitude);
 
+            if(arrayPoint.size() == 0)
+            {
+                mGoogleMap.addMarker(new MarkerOptions().position(myPosition)).setTitle("Start");
+            }
+
             polylineOptions = new PolylineOptions();
             polylineOptions.color(Color.argb((int)(255 * 0.5), 46, 43, 61));
             polylineOptions.width(10);
 
             arrayPoint.add(myPosition);
+
 
             polylineOptions.addAll(arrayPoint);
             mGoogleMap.addPolyline(polylineOptions);

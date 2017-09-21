@@ -51,10 +51,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImageGallery" />
-        <activity android:name=".ImageGalleryForSearch" />
+
         <activity android:name=".SearchLocationByKeyword" />
-        </activity>
+
     </application>
 
 </manifest>

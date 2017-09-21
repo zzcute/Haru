@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -93,8 +92,8 @@ public class ImageGalleryForSearch extends RelativeLayout implements View.OnTouc
                 {
                     fileName = arImageRes.get(i);
                     Log.d("tag",fileName);
-                    LatLng latLng = list.get(i);
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                    //LatLng latLng = list.get(i);
+                    //googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                     //mImageMain.setImageResource(arImageRes.get(i));
                 }
             }
