@@ -147,6 +147,14 @@ public class MainSceneWithLogin extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
 
+        Intent intent = getIntent();
+
+        String userID = intent.getStringExtra("userID");
+
+        TextView nickName = (TextView)header.findViewById(R.id.nickName) ;
+
+        nickName.setText(userID);
+
         logoImage = (ImageView)header.findViewById(R.id.profileImage);
 
         logoImage.setOnClickListener(new View.OnClickListener(){
@@ -380,8 +388,8 @@ public class MainSceneWithLogin extends AppCompatActivity
             @Override
             public void onClick(View v){
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                DrawerLayout drawer_white_layout = (DrawerLayout) findViewById(R.id.drawer_white_layout);
-                drawer_white_layout.setBackgroundColor(Color.WHITE);
+                //DrawerLayout drawer_white_layout = (DrawerLayout) findViewById(R.id.drawer_white_layout);
+                //drawer_white_layout.setBackgroundColor(Color.WHITE);
                 drawer.openDrawer(Gravity.LEFT);
             }
         });

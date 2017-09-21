@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_white_layout"
-    android:background="#ffffff">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
 
-    <group android:checkableBehavior="single" android:background="#ffffff">
+
+    <group android:checkableBehavior="single">
 
 
         <!--<item-->
@@ -17,13 +16,11 @@
         <item
             android:id="@+id/nav_search_keyword"
             android:title="키워드 검색"
-            android:background="#ffffff"
             android:icon="@mipmap/keyword"/>
 
         <item
             android:id="@+id/nav_search_date"
             android:title="날짜 검색"
-            android:background="#ffffff"
             android:icon="@mipmap/calendar"/>
 
     </group>
