@@ -493,7 +493,7 @@ public class MainSceneWithLogin extends AppCompatActivity
         } else if(id == R.id.nav_search_date){
             Intent intent = new Intent(
                     getApplicationContext(), // 현재 화면의 제어권자
-                    SearchLocationByLocation.class); // 다음 넘어갈 클래스 지정
+                    CalendarViewExample.class); // 다음 넘어갈 클래스 지정
             startActivity(intent);
         }
 

@@ -1,6 +1,7 @@
 package com.example.zzz.myapplication;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,7 +20,9 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -45,6 +48,10 @@ public class SearchLocationByKeyword  extends FragmentActivity
                 .enableAutoManage(this, this)
                 .build();
 
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
     }
 
     @Override
@@ -68,6 +75,8 @@ public class SearchLocationByKeyword  extends FragmentActivity
                 Log.d("Tag5", "Why?");
                 LatLng position = place.getLatLng();
                 mGoogleMap.addMarker(new MarkerOptions().position(position).title("marker"));
+                map.addCircle(new CircleOptions() .center(new LatLng(position.latitude, position.longitude)) .radius(100) .strokeColor(Color.RED) .fillColor(Color.BLUE));
+
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                 mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
             }
